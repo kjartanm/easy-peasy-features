@@ -1,0 +1,26 @@
+{
+    "project-name": "My test project",
+    "project-url": "https://my-test-project",
+    "feature": [
+        {
+            "label": "New login form", 
+            "flag": "new-login-form-v1",
+            "description": "New login form to improve onboarding metrics by ...",
+            "weighted": 1,
+            "self-select": false,
+            "enabled": true,
+            "deprecated": false,
+            "expires": "2020-05-01",
+            "properties": [
+                {
+                    "property": "company",
+                    "values": ["1234","2345","3456"]
+                },
+                {
+                    "property": "role",
+                    "values": ["admin","staff"]
+                }
+            ]
+        }
+    ]
+}

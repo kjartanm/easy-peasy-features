@@ -1,0 +1,10 @@
+{
+    "name": "Easy Peasy Microfrontends",
+    "version": 2,
+    "builds": [
+        {
+            "src": "wiredjsbundle/package.json",
+            "use": "@now/static-build"
+        }        
+    ]
+}

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://get.mavo.io/mavo.css" />
+<link href="https://fonts.googleapis.com/css?family=Architects+Daughter" rel="stylesheet">
+<!--script src="https://dev.mavo.io/dist/mavo.js"></script-->
+<script src="https://get.mavo.io/mavo.js"></script>
+<script>
+    Mavo.hooks.add({
+        "node-init-end": async function (env) {
+            if (env.context.property == "enabled") {
+                await env.context.mavo.dataLoaded;
+                env.context.element.checked = env.context.data || false;
+            } else if (env.context.property == "self-select") {
+                await env.context.mavo.dataLoaded;
+                env.context.element.checked = env.context.data || false;
+            } else if (env.context.property == "deprecated") {
+                await env.context.mavo.dataLoaded;
+                env.context.element.checked = env.context.data || false;
+            } else if (env.context.property == "treshold") {
+                await env.context.mavo.dataLoaded;
+                env.context.element.value = env.context.data || 100;
+            }
+        },
+        "node-getdata-end": async function (env) {
+            if (env.context.property == "timestamp") {
+                env.data = Date.now();
+            }            
+        }
+    });
+</script>
+<script id="initSource" type="text/plain">
+{
+    "project-name": "My test project",
+    "project-url": "https://my-test-project",
+    "timestamp": 5465465465465,
+    "feature": [
+    {
+        "label": "New login form", 
+        "flag": "new-login-form-v1",
+        "description": "New login form to improve onboarding metrics by ...",
+        "treshold": 19,
+        "self-select": false,
+        "enabled": true,
+        "deprecated": false,
+        "expires": "2020-05-01",
+        "selectors":  {
+            "country": ["no","dk"],
+            "role": ["support"],
+            "users": ["all"]
+        }
+       
+    },
+    {
+        "label": "New about-page", 
+        "flag": "new-about-page-v1",
+        "description": "New about-page to improve onboarding metrics by ...",
+        "treshold": 50,
+        "self-select": true,
+        "enabled": true,
+        "deprecated": false,
+        "expires": "2020-12-01",
+        "selectors": {
+            "country": ["all"],
+            "role": ["guest"],
+            "users": ["all"]
+        }       
+    }
+]
+}</script>
+
+<title>Easy Peasy Feature Flags</title>
+<style>
+    :root {
+        font-family: 'Architects Daughter', cursive;
+        font-size: 18px;
+        --gap: 18px;
+        --halfGap: calc(var(--gap) / 2);
+        --doubleGap: calc(var(--gap) * 2);
+        --mainOffset: 4em;
+        --cardHeight: 200px;
+        --halfCardHeight: calc(var(--cardHeight) / 2);
+        --cardWidth: 320px;
+    }
+
+    html {
+        box-sizing: border-box;
+    }
+
+    *,
+    *:before,
+    *:after {
+        box-sizing: inherit;
+    }
+
+    body,
+    main {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+    }
+
+    body {
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+    }
+
+    header {
+        height: var(--mainOffset);
+        padding: var(--gap);
+        padding-bottom: 0;
+        z-index: 0;
+    }
+
+    main {
+        overflow: scroll;
+        height: calc(100% - var(--mainOffset) - var(--gap));
+        width: 100%;
+        margin-top: var(--gap);
+        z-index: 1;
+        padding: var(--gap);
+    }
+
+    .toolbar-radio {
+        height: 2em;
+        margin-left: var(--gap);
+    }
+
+    .toolbar-radio wired-radio {
+        margin: 0;
+    }
+
+    .mv-bar {
+        display: block;
+        padding: var(--gap);
+    }
+
+    [mv-mode='edit'] .mv-edit {
+        background-color: rgba(131, 151, 151, 0.58)
+    }
+
+    .mv-bar .toolbar-btn {
+        margin-left: var(--halfGap);
+        float: right;
+        min-width: 55px;
+    }
+
+    .card {
+        display: block;
+        min-width: calc(var(--cardWidth) - var(--gap));
+        height: var(--cardHeight);
+        padding: var(--halfGap);
+    }
+
+    wired-card {
+        padding: 0;
+    }
+
+    .card-container {
+        height: var(--cardHeight);
+    }
+
+    .card-index {
+        text-align: right;
+    }
+
+    .card-flag {
+        display: inline-block;
+        background-color: #444;
+        color: whitesmoke;
+        padding-left: 4px;
+        padding-right: 4px;
+        width: auto;
+    }
+
+    .card-label {
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    [mv-mode='edit'] .card-property-editor {
+        background-color: aliceblue;
+    }
+
+    [mv-app][mv-mode="edit"] .mv-empty,
+    [mv-app] [mv-mode="edit"] .mv-empty {
+        opacity: 1;
+    }
+
+    [mv-mode='edit'] .card-property-editor--enum:after {
+        content: '▼';
+        font-weight: bold;
+        transform: scale(2, 0.5);
+        break-before: never;
+    }
+
+    .card-show-all {
+        display: block;
+        float: right;
+        margin: 0;
+        padding: 0;
+        width: 105px;
+    }
+
+    /*[mv-mode='edit'] .card-enable-edit {
+        display: block;
+    }*/
+
+    .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, var(--cardWidth));
+        grid-template-rows: min-content;
+        grid-gap: var(--gap);
+        justify-content: start;
+        background-color: #fff;
+        color: #444;
+        width: 100vw;
+        padding: var(--gap);
+        margin: 0;
+        top: 0;
+        left: 0;
+        xxxbottom: 0;
+        position: absolute;
+        grid-auto-flow: row dense;
+
+    }
+
+    .metadata {
+        display: block;
+        grid-column: 1/-1;
+        background-color: rgba(252, 170, 18, 0.575);
+        height: 6em;
+        /*calc(0.5 * var(--cardHeight));*/
+        padding: var(--gap);
+        margin: 0;
+    }
+
+    .metadata--expanded {
+        xxxheight: calc(2 * var(--cardHeight));
+    }
+
+    .metadata-items {
+        display: grid;
+        grid-gap: var(--gap);
+        grid-template-columns: repeat(2, 1fr);
+        position: relative;
+    }
+
+    .metadata-show-all {
+        position: absolute;
+        right: 10px;
+        top: -5px;
+        z-index: 10;
+    }
+
+    .metadata-item--secondary {
+        display: none;
+    }
+
+    .metadata-item-cover {
+        max-width: 160px;
+        max-height: 160px;
+    }
+
+    .metadata--expanded .metadata-item--secondary {
+        display: block;
+    }
+
+    .metadata-items h4 {
+        margin: 0;
+        margin-top: 4px;
+    }
+
+    .feature {
+        padding: 0;
+        margin: 0;
+    }
+
+    .card--main {
+        display: none;
+    }
+
+    .feature--expanded {
+        display: contents;
+    }
+
+    .feature--expanded .card--main {
+        display: block;
+        grid-column: 1/-1;
+        background-color: rgba(63, 127, 191, 0.2);
+        height: calc(2.5 * var(--cardHeight));
+        width: 100%;
+        position: relative;
+        padding: 0;
+        left: 0;
+    }
+
+    .feature--expanded .feature-treshold {
+        xxxborder: 2px solid red;
+    }
+
+    .feature-details {
+        display: flex;
+        width: 100%;
+        border: 0px solid yellow;
+        height: calc(2.5 * var(--cardHeight));
+    }
+
+    .feature-summary {
+        width: calc(var(--cardWidth) - var(--halfGap));
+        border: 0px solid red;
+        padding: var(--halfGap);
+    }
+
+    .feature-editor {
+        flex: 1;
+        border: 0px solid blue;
+        padding: var(--halfGap);
+        position: relative;
+    }
+
+    .feature-editor wired-card {
+        height: calc(100% - var(--halfGap));
+        width: calc(100% - var(--halfGap));
+        display: block;
+        position: relative;
+        background-color: rgb(250, 249, 249);
+    }
+
+    .feature-editor-canvas {
+        padding: var(--halfGap);
+        height: calc(100% - var(--gap));
+        display: block;
+        position: absolute;
+        overflow-y: scroll;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .feature--expanded .card--summary {
+        background-color: rgba(63, 127, 191, 0.2);
+    }
+
+    .card-enabled--true {
+        background-color: rgba(47, 167, 43, 0.479);
+    }
+
+    .card-enabled--true .toggle-on {
+        display: inline-block;
+    }
+
+    .card-enabled--true .toggle-off {
+        display: none;
+    }
+
+    .card-enabled--false {
+        background-color: rgba(241, 101, 36, 0.479);
+    }
+
+    .card-enabled--false .toggle-off {
+        display: inline-block;
+    }
+
+    .card-enabled--false .toggle-on {
+        display: none;
+    }
+
+    .toggle-off,
+    .toggle-on {
+        position: absolute;
+        bottom: 25px;
+        right: 15px;
+    }
+
+
+    .mv-add {
+        max-width: 150px;
+        min-width: 120px;
+        max-height: 50px;
+        min-height: 40px;
+        background: #fff;
+        font-family: 'Architects Daughter', cursive;
+        font-size: 18px;
+        border: 1.5px solid #020202a2;
+    }
+
+    wired-radio {
+        font-weight: bold;
+        margin-top: var(--halfGap);
+        transform: scale(0.8, 0.8);
+    }
+
+    wired-toggle {
+        transform: scale(0.6, 0.6);
+        vertical-align: middle;
+    }
+
+    wired-slider {
+        vertical-align: middle;
+    }
+
+    wired-toggle.killswitch {
+        --wired-toggle-off-color: #a02b2b;
+        --wired-toggle-on-color: #259425;
+        position: absolute;
+        bottom: 20px;
+        left: 5px;
+    }
+
+    .header-title {
+        font-size: 1.7em;
+        font-weight: bold;
+        line-height: 1em;
+    }
+
+    .mv-item-bar.mv-ui {
+        bottom: calc(100% - 14px);
+    }
+
+    .mv-status {
+        display: none;
+    }
+
+    .mv-popup {
+        display: none;
+    }
+
+    .selector::after {
+        content: ',';
+        margin-right: 5px;
+    }
+
+    .selector:last-of-type:after {
+        content: '';
+        margin-right: 0;
+    }
+</style>
+<script>
+    let currentSelectedFeatureIndex = -1;
+    let currentRadio = null;
+    function onClickExpandFeature(selectedFeatureIndex, selected, radio) {
+        // onclick="this.wiredRender(true)"
+
+        const currentCardExpanded = document.querySelector('#feature-' + currentSelectedFeatureIndex);
+        const cardToExpand = document.querySelector('#feature-' + selectedFeatureIndex);
+        cardToExpand.classList.toggle('feature--expanded', selected)
+        if (currentCardExpanded && currentSelectedFeatureIndex != selectedFeatureIndex) {
+            currentCardExpanded.classList.toggle('feature--expanded', false);
+            if (currentRadio) {
+                currentRadio.checked = false;
+            }
+        }
+        currentSelectedFeatureIndex = selectedFeatureIndex;
+        currentRadio = radio;
+        document.querySelectorAll(".card--main").forEach(item => item.wiredRender(true));
+        document.querySelectorAll(".feature-treshold").forEach(item => item.wiredRender(true));
+    }
+
+    function onClickExpandMetadata(selected, radio) {
+        const metadataSection = document.querySelector('.metadata');
+        metadataSection.classList.toggle('metadata--expanded', selected)
+    }
+</script>
+</head>
+
+<body mv-app="EasyPeasyFeatures" mv-plugins="markdown" mv-source="#initSource"
+    mv-storage="local" mv-xxx-storage="https://github.com/kjartanm/easy-peasy-fatures/blob/master/api/features.json">
+    <div hidden>
+        <select id="countries">
+            <option value="all">all</option>
+            <option value="no">Norway</option>
+            <option value="se">Sweden</option>
+            <option value="dk">Denmark</option>
+            <option value="fi">Finland</option>
+            <option value="is">Iceland</option>
+        </select>
+        <select id="roles">
+            <option value="all">all</option>
+            <option value="admin">Admin</option>
+            <option value="support">Support</option>
+            <option value="customer">Customer</option>
+            <option value="guest">Guest</option>
+        </select>
+    </div>
+    <header>
+        <wired-card class="mv-bar">
+            <span class="header-title">Easy Peasy Feature Flags</span>
+            <wired-button class="toolbar-btn mv-login">login</wired-button>
+            <wired-button class="toolbar-btn mv-logout">logout</wired-button>
+
+            <wired-button class="toolbar-btn mv-edit">edit</wired-button>
+            <wired-button class="toolbar-btn mv-save">save</wired-button>
+            <wired-button class="toolbar-btn mv-export">export</wired-button>
+        </wired-card>
+    </header>
+    <main>
+        <div class="features">
+            <meta property="timestamp">
+            <wired-card class="metadata">
+                <div class="metadata-items">
+                    <div class="metadata-item">
+                        <h4>Project</h4>
+                        <div property="project-name" class="card-property-editor metadata-label metadata-property">
+                        </div>
+                    </div>
+                    <div class="metadata-item">
+                        <h4>URL</h4>
+                        <div property="project-url" class="card-property-editor metadata-label metadata-property"></div>
+                        
+                    </div>
+                </div>
+            </wired-card>
+            <div id="feature-[$index + 1]" property="feature" mv-multiple>
+                <wired-card class="card-container card--summary card-enabled--[enabled]">
+                    <div class="card">
+                        <wired-radio data-feature-index="[$index + 1]"
+                            onchange="onClickExpandFeature(this.getAttribute('data-feature-index'), this.checked, this); //this.parentElement.nextSibling.nextSibling.updated()"
+                            name="card-edit" class="card-show-all">show all</wired-radio>
+                        <div class="card-flag">[flag]</div>
+                        <div class="card-label">[label]</div>
+                        <div class="card-description">[description]</div>
+                        <wired-toggle mv-mode="edit" property="enabled" mv-attribute="aria-checked" aria-checked="false"
+                            onchange="this.setAttribute('aria-checked', this.checked)" class="mv-editor killswitch">
+                        </wired-toggle>
+                        <label class="toggle-on">Flag is <b>ON</b></label>
+                        <label class="toggle-off">Flag is <b>OFF</b></label>
+                    </div>
+                </wired-card>
+                <wired-card class="card--main">
+                    <div class="card feature-details">
+                        <div class="feature-summary">
+                            <div>Show/edit [flag]</div>
+                            <h3>Flag</h3>
+                            <div property="flag" class="card-property-editor"></div>
+                            <h3>Label</h3>
+                            <div property="label" class="card-property-editor"></div>
+                            <h3>Description</h3>
+                            <div property="description"></div>
+                        </div>
+                        <div class="feature-editor">
+                            <div>
+                                <label>Self select:</label>
+                                <wired-toggle onchange="this.setAttribute('aria-checked', this.checked)" mv-mode="edit"
+                                    property="self-select" class="mv-editor" mv-attribute="aria-checked"></wired-toggle>
+                            </div>
+                            <div>
+                                <label>Deprecated:</label>
+                                <wired-toggle onchange="this.setAttribute('aria-checked', this.checked)" mv-mode="edit"
+                                    property="deprecated" class="mv-editor" mv-attribute="aria-checked"></wired-toggle>
+                            </div>
+                            <div>
+                                <label>AB-treshold:</label>
+                                <wired-slider class="feature-treshold" onclick="this.wiredRender(true)"
+                                    onchange="this.render();this.setAttribute('aria-valuenow', this.value)"
+                                    knobradius="12" mv-attribute="aria-valuenow" property="treshold"
+                                    aria-valuenow="100"></wired-slider>
+                            </div>
+                            <h3>Selectors</h3>
+                            <ul property="selectors">
+                                <li>
+                                    <label class="card-label">Countries:</label><br>
+                                    <span class="selector" property="country" mv-multiple mv-edit="#countries"></span>
+                                </li>
+                                <li>
+                                    <label class="card-label">Roles:</label><br>
+                                    <span class="selector" property="role" mv-multiple mv-edit="#roles"></span>
+                                </li>
+                                <li>
+                                    <label class="card-label">Users:</label><br>
+                                    <span class="selector" property="users" mv-multiple></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </wired-card>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="./test.js"></script>
+    <!--script src="https://unpkg.com/wired-elements@latest/dist/wired-elements.bundled.js"></!--script-->
+</body>
+
+</html>
