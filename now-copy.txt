@@ -45,8 +45,16 @@
         { "src": "/", "dest": "/packages/home/index.html" }
     ]
 }
-
+wiredjs
 
 ],
 "routes": [
     { "src": "/wiredjs", "dest": "/wiredjsbundle/public/wiredjs.js" }        
+
+
+            "src": "wiredjsbundle/package.json",
+            "use": "@now/static-build",
+            "config": {
+                "distDir": "public",
+                "includeFiles": ["public/wiredjs.js"]
+            }     

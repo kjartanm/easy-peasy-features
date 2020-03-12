@@ -16,7 +16,7 @@ function stopDynamicImport () {
 export default {
     input: 'src/index.js', 
     output: {
-        file: './public/wiredjs.js',
+        file: 'public/wiredjs.js',
         format: 'esm'
     },
 
@@ -26,7 +26,6 @@ export default {
         commonjs({
             include: 'node_modules/**',
             namedExports: {
-                'node_modules/react/index.js': ['React', 'useState', 'useEffect', 'useContext']
             }
          }),
          babel({

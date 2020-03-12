@@ -4,7 +4,51 @@
     "builds": [
         {
             "src": "wiredjsbundle/package.json",
-            "use": "@now/static-build"
-        }        
+            "use": "@now/static-build",
+            "config": {
+                "distDir": "public"
+            }
+        },
+        {
+            "src": "app/package.json",
+            "use": "@now/static-build",
+            "config": {
+                "distDir": "build"
+            }
+        },
+        {
+            "src": "features/**/*.*",
+            "use": "@now/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/wiredjs",
+            "dest": "/wiredjsbundle/wiredjs.js"
+        },
+        {
+            "src": "/features/(.*)",
+            "dest": "/features/$1"
+        },
+        {
+            "src": "/shop",
+            "dest": "/app/index.html"
+        },
+        {
+            "src": "/about",
+            "dest": "/app/index.html"
+        },
+        {
+            "src": "/home",
+            "dest": "/app/index.html"
+        },
+        {
+            "src": "/profile",
+            "dest": "/app/index.html"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/app/$1"
+        }
     ]
 }

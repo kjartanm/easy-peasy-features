@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://get.mavo.io/mavo.css" />
+    <script src="https://dev.mavo.io/dist/mavo.js"></script>
+    </head>
+<body>
+    <div mv-app mv-source="https://test.mavo.io/data/creatures.json">
+        <button mv-action="add(cat)">Set all names to Chris</button>
+        <table>
+            <tr property="cat" mv-multiple>
+                <td property="name"></td>
+                <td property="age"></td>
+                <td><button mv-action="set(age, 13)">Set current age to 13</button></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

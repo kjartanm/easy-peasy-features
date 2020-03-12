@@ -1,0 +1,24 @@
+.navbar {
+    display: block;
+    width: 100%;
+}
+
+.navbar-container {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    padding: 1em;
+}
+
+.navbar-item {
+    display: inline-block;
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    margin-right: 1em;
+}
+
+.navbar-space {
+    flex: 1;
+}
+

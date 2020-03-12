@@ -20,7 +20,7 @@
             } else if (env.context.property == "deprecated") {
                 await env.context.mavo.dataLoaded;
                 env.context.element.checked = env.context.data || false;
-            } else if (env.context.property == "treshold") {
+            } else if (env.context.property == "threshold") {
                 await env.context.mavo.dataLoaded;
                 env.context.element.value = env.context.data || 100;
             }
@@ -28,49 +28,73 @@
         "node-getdata-end": async function (env) {
             if (env.context.property == "timestamp") {
                 env.data = Date.now();
-            }            
+            }
+            if (env.context.property == "enabled") {
+                env.data = String(env.data) === 'true';
+            }
+            if (env.context.property == "deprecated") {
+                env.data = String(env.data) === 'true';
+            }
+            if (env.context.property == "self-select") {
+                env.data = String(env.data) === 'true';
+            }
         }
     });
 </script>
 <script id="initSource" type="text/plain">
-{
-    "project-name": "My test project",
-    "project-url": "https://my-test-project",
-    "timestamp": 5465465465465,
-    "feature": [
     {
-        "label": "New login form", 
-        "flag": "new-login-form-v1",
-        "description": "New login form to improve onboarding metrics by ...",
-        "treshold": 19,
-        "self-select": false,
-        "enabled": true,
-        "deprecated": false,
-        "expires": "2020-05-01",
-        "selectors":  {
-            "country": ["no","dk"],
-            "role": ["support"],
-            "users": ["all"]
-        }
-       
-    },
-    {
-        "label": "New about-page", 
-        "flag": "new-about-page-v1",
-        "description": "New about-page to improve onboarding metrics by ...",
-        "treshold": 50,
-        "self-select": true,
-        "enabled": true,
-        "deprecated": false,
-        "expires": "2020-12-01",
-        "selectors": {
-            "country": ["all"],
-            "role": ["guest"],
-            "users": ["all"]
-        }       
-    }
-]
-}</script>
+        "project-name": "My test project",
+            "project-url": "https://my-test-project",
+                "timestamp": 5465465465465,
+                    "feature": [
+                        {
+                            "label": "New login form",
+                            "flag": "shiny-frontend-v1",
+                            "description": "New frontend to improve metrics by ...",
+                            "threshold": 100,
+                            "self-select": true,
+                            "enabled": true,
+                            "deprecated": false,
+                            "expires": "2020-05-01",
+                            "selectors": {
+                                "country": ["no", "dk"],
+                                "role": ["all"],
+                                "userid": ["all"]
+                            }
+
+                        },
+                        {
+                            "label": "Add customer profile-page",
+                            "flag": "profile-page-v1",
+                            "description": "A customer profile-page to improve metrics by ...",
+                            "threshold": 100,
+                            "self-select": true,
+                            "enabled": true,
+                            "deprecated": false,
+                            "expires": "2020-12-01",
+                            "selectors": {
+                                "country": ["all"],
+                                "role": ["customer"],
+                                "userid": ["all"]
+                            }
+                        }, {
+                            "label": "Add support chat",
+                            "flag": "support-chat-v1",
+                            "description": "A support chat to improve metrics by ...",
+                            "threshold": 100,
+                            "self-select": true,
+                            "enabled": true,
+                            "deprecated": false,
+                            "expires": "2020-12-01",
+                            "selectors": {
+                                "country": ["se"],
+                                "role": ["all"],
+                                "userid": ["all"]
+                            }
+                        }
+
+                    ]
+    }</script>
 
 <title>Easy Peasy Feature Flags</title>
 <style>
@@ -299,7 +323,7 @@
         left: 0;
     }
 
-    .feature--expanded .feature-treshold {
+    .feature--expanded .feature-threshold {
         xxxborder: 2px solid red;
     }
 
@@ -459,7 +483,7 @@
         currentSelectedFeatureIndex = selectedFeatureIndex;
         currentRadio = radio;
         document.querySelectorAll(".card--main").forEach(item => item.wiredRender(true));
-        document.querySelectorAll(".feature-treshold").forEach(item => item.wiredRender(true));
+        document.querySelectorAll(".feature-threshold").forEach(item => item.wiredRender(true));
     }
 
     function onClickExpandMetadata(selected, radio) {
@@ -469,8 +493,8 @@
 </script>
 </head>
 
-<body mv-app="EasyPeasyFeatures" mv-plugins="markdown" mv-source="#initSource"
-    mv-storage="local" mv-xxx-storage="https://github.com/kjartanm/easy-peasy-fatures/blob/master/api/features.json">
+<body mv-app="EasyPeasyFeatures" mv-plugins="markdown" mv-source="#initSource" mv-storage="local"
+    mv-xxx-storage="https://github.com/kjartanm/easy-peasy-fatures/blob/master/api/features.json">
     <div hidden>
         <select id="countries">
             <option value="all">all</option>
@@ -512,7 +536,7 @@
                     <div class="metadata-item">
                         <h4>URL</h4>
                         <div property="project-url" class="card-property-editor metadata-label metadata-property"></div>
-                        
+
                     </div>
                 </div>
             </wired-card>
@@ -525,7 +549,7 @@
                         <div class="card-flag">[flag]</div>
                         <div class="card-label">[label]</div>
                         <div class="card-description">[description]</div>
-                        <wired-toggle mv-mode="edit" property="enabled" mv-attribute="aria-checked" aria-checked="false"
+                        <wired-toggle mv-mode="edit" property="enabled" mv-attribute="aria-checked"
                             onchange="this.setAttribute('aria-checked', this.checked)" class="mv-editor killswitch">
                         </wired-toggle>
                         <label class="toggle-on">Flag is <b>ON</b></label>
@@ -555,10 +579,10 @@
                                     property="deprecated" class="mv-editor" mv-attribute="aria-checked"></wired-toggle>
                             </div>
                             <div>
-                                <label>AB-treshold:</label>
-                                <wired-slider class="feature-treshold" onclick="this.wiredRender(true)"
+                                <label>AB-threshold:</label>
+                                <wired-slider class="feature-threshold" onclick="this.wiredRender(true)"
                                     onchange="this.render();this.setAttribute('aria-valuenow', this.value)"
-                                    knobradius="12" mv-attribute="aria-valuenow" property="treshold"
+                                    knobradius="12" mv-attribute="aria-valuenow" property="threshold"
                                     aria-valuenow="100"></wired-slider>
                             </div>
                             <h3>Selectors</h3>
@@ -573,7 +597,7 @@
                                 </li>
                                 <li>
                                     <label class="card-label">Users:</label><br>
-                                    <span class="selector" property="users" mv-multiple></span>
+                                    <span class="selector" property="userid" mv-multiple></span>
                                 </li>
                             </ul>
                         </div>
@@ -582,7 +606,7 @@
             </div>
         </div>
     </main>
-    <script type="module" src="./test.js"></script>
+    <script type="module" src="./wiredjs"></script>
     <!--script src="https://unpkg.com/wired-elements@latest/dist/wired-elements.bundled.js"></!--script-->
 </body>
 
