@@ -8,6 +8,8 @@
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Web site created using create-react-app" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -36,16 +38,31 @@
 
         body {
             margin: 0;
-            padding: 1em;
-            position: relative;
+            padding: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            font-family: 'Architects Daughter', cursive;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        code {
+            font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+                monospace;
+        }
+
+        h1 {
+            font-size: 45px;
+            font-weight: bold;
         }
     </style>
-    <title>React App</title>
+    <title>Fake site</title>
 </head>
 
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <main id="root"></main>
+    <div id="root"></div>
 </body>
 
 </html>

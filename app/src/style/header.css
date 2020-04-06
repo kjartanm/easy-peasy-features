@@ -1,6 +1,13 @@
 .header {
     display: block;
-    width: 100%;
+    width: auto;
+    margin: 0.5em;
+    height: 7em;
+}
+
+
+.App--shiny .header {
+    background-color: lightpink;
 }
 
 .header-container {

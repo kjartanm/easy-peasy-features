@@ -1,0 +1,22 @@
+.content{
+    display: block;
+    height: auto;
+    margin: .5em;
+    position: absolute;
+    padding: 0;
+    bottom: 0;
+    top: 12.5em;
+    right: 0.5em;
+    left: 0.5em;
+    overflow-y: scroll;
+}
+
+.content-wrapper {
+    padding: 1em;
+    margin: 0;
+    width: 100%;
+}
+
+.App--shiny .content {
+    background-color:lavenderblush; 
+}

@@ -1,11 +1,8 @@
 .App {
-    text-align: center;
+    margin: 0;
+    padding: 0.5em;
   }
 
-  .App--shiny {
-    background-color: pink;
-  }
-    
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -40,3 +37,8 @@
     transform: rotate(360deg);
   }
 }
+
+.App--shiny {
+    font-family: 'Special Elite', cursive;
+}
+    

@@ -16,6 +16,7 @@
                 env.context.element.checked = env.context.data || false;
             } else if (env.context.property == "self-select") {
                 await env.context.mavo.dataLoaded;
+                console.log("self-init", env.context.data);
                 env.context.element.checked = env.context.data || false;
             } else if (env.context.property == "deprecated") {
                 await env.context.mavo.dataLoaded;
@@ -36,6 +37,7 @@
                 env.data = String(env.data) === 'true';
             }
             if (env.context.property == "self-select") {
+                console.log("self", env.data)
                 env.data = String(env.data) === 'true';
             }
         }
@@ -48,7 +50,7 @@
                 "timestamp": 5465465465465,
                     "feature": [
                         {
-                            "label": "New login form",
+                            "label": "New frontend",
                             "flag": "shiny-frontend-v1",
                             "description": "New frontend to improve metrics by ...",
                             "threshold": 100,
@@ -68,7 +70,7 @@
                             "flag": "profile-page-v1",
                             "description": "A customer profile-page to improve metrics by ...",
                             "threshold": 100,
-                            "self-select": true,
+                            "self-select": false,
                             "enabled": true,
                             "deprecated": false,
                             "expires": "2020-12-01",
@@ -82,7 +84,7 @@
                             "flag": "support-chat-v1",
                             "description": "A support chat to improve metrics by ...",
                             "threshold": 100,
-                            "self-select": true,
+                            "self-select": false,
                             "enabled": true,
                             "deprecated": false,
                             "expires": "2020-12-01",
@@ -92,7 +94,6 @@
                                 "userid": ["all"]
                             }
                         }
-
                     ]
     }</script>
 
@@ -173,6 +174,10 @@
         min-width: 55px;
     }
 
+    .mv-unsaved-changes .mv-save {
+        background-color: coral;
+    }
+
     .card {
         display: block;
         min-width: calc(var(--cardWidth) - var(--gap));
@@ -247,7 +252,6 @@
         margin: 0;
         top: 0;
         left: 0;
-        xxxbottom: 0;
         position: absolute;
         grid-auto-flow: row dense;
 
@@ -412,6 +416,7 @@
         font-family: 'Architects Daughter', cursive;
         font-size: 18px;
         border: 1.5px solid #020202a2;
+        margin-left: 10px;
     }
 
     wired-radio {
@@ -493,7 +498,7 @@
 </script>
 </head>
 
-<body mv-app="EasyPeasyFeatures" mv-plugins="markdown" mv-source="#initSource" mv-storage="local"
+<body mv-app="EasyPeasyFeatures" mv-plugins="markdown" mv-init="#initSource" mv-storage="local"
     mv-xxx-storage="https://github.com/kjartanm/easy-peasy-fatures/blob/master/api/features.json">
     <div hidden>
         <select id="countries">

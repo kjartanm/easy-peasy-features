@@ -1,5 +1,9 @@
 .chat-container {
     position: fixed;
-    bottom: 2em;
-    right: 2em;
+    bottom: 0.5em;
+    right: 0.5em;
+}
+
+.App--shiny .chat-container {
+    background-color: yellowgreen; 
 }

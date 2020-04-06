@@ -20,15 +20,15 @@ class FeatureBoundary extends React.Component {
         console.log(`This is error reporting for '${this.props.flag}': ${error}`);
     }
 
-    render() {
-        const doAnalytics = (msg) => {
-            console.log(`This is analytics for '${this.props.flag}': ${msg}`);
-        }
+    doAnalytics = (msg) => {
+        console.log(`This is analytics for '${this.props.flag}': ${msg}`);
+    }
 
+    render() {
         if (this.state.hasError) {
-            return (<NoAccess flag={this.props.flag} status="error-caught-by-boundary" switchState={this.props.switchState || 'Not Applicable'} />);
+            return (<NoAccess flag={this.props.flag} status="error-caught-by-boundary" switchState={this.props.switchState || 'NA'} />);
         }
-        return (<AnalyticsContext.Provider value={{ doAnalytics }}>{this.props.children}</AnalyticsContext.Provider>);
+        return (<AnalyticsContext.Provider value={{ doAnalytics: this.doAnalytics }}>{this.props.children}</AnalyticsContext.Provider>);
     }
 }
 

@@ -71,7 +71,7 @@ export const Header = () => {
     return (
         <wired-card class="header">
             <header className="header-container">
-                <h2 className="header-item header-heading">My Fake Site!</h2>
+                <h1 className="header-item header-heading">My Fake Site!</h1>
                 <wired-combo ref={selectUser} className="header-item" selected={user ? user.userid : 'anon'}>
                     <wired-item key="anon" value="anon"> - choose user - </wired-item>
                     {

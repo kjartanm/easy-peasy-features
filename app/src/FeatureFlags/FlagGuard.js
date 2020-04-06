@@ -1,15 +1,16 @@
 // eslint-disable-next-line 
-import React, { useContext, useMemo} from 'react';
+import React, { useContext, useState, useMemo} from 'react';
 import { FlagContext } from './FlagContext';
+import { FeatureBoundary } from './FeatureBoundary';
+import { NoAccess } from './NoAccess';
 
 export const FlagGuard = ({ flag, children }) => {
     const { checkFlag, user, timeStamp } = useContext(FlagContext);
+    const [hasError, setHasError] = useState(false);
     const checkedFlag = useMemo(() => checkFlag(flag, user, timeStamp), [flag, user, timeStamp, checkFlag]);
-    if (checkedFlag && checkedFlag.value) {
-        return children;
+    if (checkedFlag && checkedFlag.value && !hasError) {
+        return <FeatureBoundary setHasError={setHasError} flag={flag}>{children}</FeatureBoundary>;
     } else {
-        return (
-            <span style={{ display: 'none' }} dangerouslySetInnerHTML={{ __html: `<!-- No entry for ${flag}. Status: ${checkedFlag.status} -->` }}></span>
-        )
+        return <NoAccess flag={flag} status={checkedFlag.status}/>
     }
 }

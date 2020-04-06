@@ -1,6 +1,12 @@
 .navbar {
     display: block;
-    width: 100%;
+    width: auto;
+    margin: 0.5em;
+    height: 4em;
+}
+
+.App--shiny .navbar {
+    background-color: lightskyblue; 
 }
 
 .navbar-container {
