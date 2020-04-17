@@ -51,6 +51,10 @@
             "dest": "/app/index.html"
         },
         {
+            "src": "/",
+            "dest": "/app/index.html"
+        },
+        {
             "src": "/(.*)",
             "dest": "/app/$1"
         }
