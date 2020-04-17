@@ -3,7 +3,7 @@ import React from 'react';
 import { FlagGuard } from './FeatureFlags';
 import { FlagSwitch } from './FeatureFlags';
 //import { FlagToggle } from './FeatureFlags';
-import './style/app.css';
+import './style/App.css';
 import { ChatButton } from './ChatButton';
 import { Header } from './Header';
 import { Navbar } from './Navbar';
