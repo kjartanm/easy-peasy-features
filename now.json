@@ -48,7 +48,7 @@
         },
         {
             "src": "/test",
-            "dest": "/app/index.html"
+            "dest": "/features/test.html"
         },
         {
             "src": "/",
