@@ -6,7 +6,7 @@ import { NoAccess } from './NoAccess';
 
 const FlagSwitchContext = createContext();
 
-const _FlagSwitch = ({ flag, children }) => {
+const FlagSwitch = ({ flag, children }) => {
     const [hasError, setHasError] = useState(false);
     const { checkFlag, user, timeStamp } = useContext(FlagContext);
     const checkedFlag = useMemo(() => checkFlag(flag, user, timeStamp), [flag, user, timeStamp, checkFlag]);
@@ -14,8 +14,8 @@ const _FlagSwitch = ({ flag, children }) => {
 }
 
 function On({ children }) {
-    const { on, flag, status, hasError, setHasError } = useContext(FlagSwitchContext)
-    return (on || hasError) ? <FeatureBoundary flag={flag} setHasError={setHasError} switchState="On">{children}</FeatureBoundary> : <NoAccess flag={flag} status={status} switchState="On" />;
+    const { on, flag, status, hasError, setHasError } = useContext(FlagSwitchContext);
+    return (on && !hasError) ? <FeatureBoundary flag={flag} setHasError={setHasError} switchState="On">{children}</FeatureBoundary> : <NoAccess flag={flag} status={status} switchState="On" />;
 }
 
 function Off({ children }) {
@@ -23,7 +23,7 @@ function Off({ children }) {
     return (on && !hasError) ? <NoAccess flag={flag} status={status} switchState="Off" /> : <FeatureBoundary setHasError={setHasError} flag={flag} switchState="Off">{children}</FeatureBoundary>;
 }
 
-_FlagSwitch.On = On;
-_FlagSwitch.Off = Off;
+FlagSwitch.On = On;
+FlagSwitch.Off = Off;
 
-export const FlagSwitch = _FlagSwitch;
+export { FlagSwitch };

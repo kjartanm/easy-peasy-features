@@ -57,6 +57,11 @@ const mockData = {
     ]
 };
 
+let tempFlags = {}
+mockData.feature.forEach(feature => {
+    tempFlags[feature.flag] = feature;
+});
+
 export const FlagProvider = (props) => {
     const [timeStamp, setTimeStamp] = useLocalStorage('timeStamp', Date.now());
     const [user, setUser] = useLocalStorage('user', {
@@ -66,7 +71,8 @@ export const FlagProvider = (props) => {
         "role": "admin"
     });
     const [userSettings, setUserSettings] = useLocalStorage('userSettings', {});
-    const [flags, setFlags] = useLocalStorage('flags', mockData);
+    const [flags, setFlags] = useLocalStorage('flags', tempFlags);
+
     const checkFlag = flag => {
         let checkedFlag = flagExists(flag, flags);
         if (!checkedFlag.value) return checkedFlag;
@@ -100,12 +106,18 @@ export const FlagProvider = (props) => {
                 setTimeStamp(storageFlags.timestamp);
             }
         }
-        updateFlags(JSON.parse(window.localStorage.getItem('EasyPeasyFeatures')));
+
+        const initFlags = window.localStorage.getItem('EasyPeasyFeatures');
+        if(initFlags){
+            updateFlags(JSON.parse(initFlags));
+        }
+        
         const listener = e => {
             if (e.key === 'EasyPeasyFeatures') {
                 updateFlags(JSON.parse(e.newValue));
             }
         }
+        
         window.addEventListener('storage', listener);
         return () => window.removeEventListener('storage', listener);
     }, [timeStamp, setFlags, setTimeStamp])
