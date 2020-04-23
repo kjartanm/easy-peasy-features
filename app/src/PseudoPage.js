@@ -11,8 +11,8 @@ export const PseudoPage = ({ pageTitle='Something' }) => {
             <wired-card class="message">
                 <h4>This is a Feature Flags demo/prototype</h4>
                 <ul>
-                    <li>For a writeup, see <a href="vg.no">test</a></li>
-                    <li>For github repo, see <a href="vg.no">test</a></li>
+                    <li>For a writeup, see <a href="https://medium.com/@kjartanmuller/feature-flags-an-explainer-and-interactive-demo-using-react-and-mavo-5f84eed3d111">https://medium.com/@kjartanmuller/feature-flags-an-explainer-and-interactive-demo-using-react-and-mavo-5f84eed3d111</a></li>
+                    <li>For github repo, see <a href="https://github.com/kjartanm/easy-peasy-features">https://github.com/kjartanm/easy-peasy-features</a></li>
                     <li>For the Flag-dashboard, see <a href="/features" target="_blank">Easy Peasy Featureflags</a></li>
                 </ul>
                 <p>It currently uses 3 active flags:</p>

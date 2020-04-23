@@ -1,8 +1,6 @@
 import React from 'react';
-//import { FlagContext } from './FeatureFlags';
 import { FlagGuard } from './FeatureFlags';
 import { FlagSwitch } from './FeatureFlags';
-//import { FlagToggle } from './FeatureFlags';
 import './style/App.css';
 import { ChatButton } from './ChatButton';
 import { Header } from './Header';
